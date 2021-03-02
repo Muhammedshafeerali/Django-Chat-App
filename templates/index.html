@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+<div class="row pt-5 pl-5" >
+    <div class="col-md-4">
+       <a href="{% url 'chat_room' room_id='1' %}" class="btn btn-outline-primary">room 1</a> 
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'chat_room' room_id='2' %}" class="btn btn-outline-primary">room 2</a> 
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'chat_room' room_id='3' %}" class="btn btn-outline-primary">room 3</a> 
+    </div>
+</div>
+
+
+{% endblock content %}
+    

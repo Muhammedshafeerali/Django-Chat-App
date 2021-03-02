@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'chat.css' %}">
+
+<section class="msger">
+    <header class="msger-header">
+      <div class="msger-header-title">
+        <i class="fas fa-comment-alt"></i> SimpleChat
+      </div>
+      <div class="msger-header-options">
+        <span><i class="fas fa-cog"></i></span>
+      </div>
+    </header>
+  
+    <div id="chat">
+        
+    </div>
+  
+    <form class="msger-inputarea">
+      <input type="text" id="chat-message-input" class="msger-input" placeholder="Enter your message...">
+      <button type="submit"  id="chat-message-submit" class="msger-send-btn">Send</button>
+    </form>
+  </section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+        var $input = $('#chat-message-input');
+        var $submit = $('#chat-message-submit');
+        
+        $submit.click(function(e) {
+            e.preventDefault()
+        var message = $input.val();
+        if(message) {
+        // send message in JSON format
+        chatSocket.send(JSON.stringify({'message': message}));
+        // clear input
+        $input.val('');
+        // return focus
+        $input.focus();
+        }
+        });
+        $input.focus();
+        $input.keyup(function(e) {
+        if (e.which === 13) {
+     // submit with enter / return key
+        $submit.click();
+ }
+});
+  </script>
+  <script>
+      
+    var url = 'ws://' + window.location.host +'/ws/room/' + '{{ room_id }}/';
+    var chatSocket = new WebSocket(url);
+
+    chatSocket.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    var message = data.message;
+    var dateOptions = {hour: 'numeric', minute: 'numeric', hour12: true};
+    var datetime = new Date(data['datetime']).toLocaleString('en',
+    dateOptions);
+    var isMe = data.user === '{{ request.user }}';
+    var source = isMe ? 'me' : 'other';
+    var name = isMe ? 'Me' : data.user;
+    var $chat = $('#chat');
+    $chat.append('<div class="message ' + source + '">' +
+    '<strong>' + name + '</strong> ' +
+    '<span class="date">' + datetime + '</span><br>' +
+    message +
+    '</div>');
+    $chat.scrollTop($chat[0].scrollHeight);
+    };
+    chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+    };
+  </script>
+{% endblock content %}
+    
