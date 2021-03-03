@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'login.css' %}">
+<div id="login">
+
+    <div class="divGroup glass">
+      <div class="welcomeHeader">
+        <h1>Welcome</h1>
+      </div>
+      
+      <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+      
+      <div>
+        <input placeholder="Username" name="name" autocomplete="off"  class="inputCustomStyle" required>
+      </div>
+      
+      <div>
+        <input type="password" name="password" autocomplete="new-password" class="inputCustomStyle" placeholder="password" required>
+      </div>
+  
+      <div class="GlassButtons">
+        <button  type="submit" class="glassBtn">Sign Up</button>
+      </form>
+        <a href="{% url 'login' %}" class="glassBtn" >login </a>
+      </div>
+      
+      {% for message in messages %}
+        <p>{{message}}</p>
+      {% endfor %}
+        
+    </div>
+  </div>

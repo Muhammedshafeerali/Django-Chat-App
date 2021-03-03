@@ -14,10 +14,11 @@
         <span><i class="fas fa-cog"></i></span>
       </div>
     </header>
-  
-    <div id="chat">
-        
-    </div>
+    <main class="msger-chat" id="chat">
+
+
+    </main>
+    
   
     <form class="msger-inputarea">
       <input type="text" id="chat-message-input" class="msger-input" placeholder="Enter your message...">
@@ -61,13 +62,18 @@
     var datetime = new Date(data['datetime']).toLocaleString('en',
     dateOptions);
     var isMe = data.user === '{{ request.user }}';
-    var source = isMe ? 'me' : 'other';
+    var source = isMe ? 'right-msg' : 'left-msg';
     var name = isMe ? 'Me' : data.user;
     var $chat = $('#chat');
-    $chat.append('<div class="message ' + source + '">' +
-    '<strong>' + name + '</strong> ' +
-    '<span class="date">' + datetime + '</span><br>' +
-    message +
+    $chat.append(  '<div class="msg  ' + source + '">'+
+    '<div class="msg-bubble">'+
+      '<div class="msg-info">'+
+        '<div class="msg-info-name">' + name + '</div>'+
+        '<div class="msg-info-time">' + datetime + '</div>'+
+      '</div>'+
+
+      '<div class="msg-text">'+ message +'</div>'+
+    '</div>'+
     '</div>');
     $chat.scrollTop($chat[0].scrollHeight);
     };
@@ -76,4 +82,9 @@
     };
   </script>
 {% endblock content %}
-    
+
+
+
+
+
+
